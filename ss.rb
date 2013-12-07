@@ -15,6 +15,10 @@ class SecretSanta
         #end
         #pp @pairs
     end
+    
+    def pairs
+        @pairs
+    end
 
     def pair
         if @names.nil?
@@ -51,6 +55,7 @@ class SecretSanta
                     puts "Non unique names were removed."
                 end
             end
+            @pairs = h
             return h
         else
             if @debug
@@ -103,5 +108,19 @@ def testing
 end
 
 if __FILE__ == $0
-    testing
+    if ARGV.size == 0
+        #testing
+        print "usage: ", $0, " [namesfile | name1 name2 name3]\name3"
+    elsif ARGV.size == 1
+        print "read the file\n"
+        file = File.open(ARGV[0], "r")
+        names = file.readlines.map(&:chomp)
+        names = names.select{|name| name != ""}
+        ss = SecretSanta.new(names)
+        pp ss.pair
+    else
+        print "read the names\n"
+        ss = SecretSanta.new(ARGV)
+        pp ss.pair
+    end
 end
