@@ -10,10 +10,9 @@ class SecretSanta
         @pairs = nil
         @debug = options[:debug]
         
-        #if @names
-        #    @pairs = pair
-        #end
-        #pp @pairs
+        if @names
+            @pairs = pair
+        end
     end
     
     def pairs
@@ -47,7 +46,6 @@ class SecretSanta
                     h[key] = uniq_names.pop
                 end
             end
-            
             if @debug
                 puts "pair called and names is a list"
                 puts "The names are #{@names.join(", ")}."
@@ -55,7 +53,6 @@ class SecretSanta
                     puts "Non unique names were removed."
                 end
             end
-            @pairs = h
             return h
         else
             if @debug
@@ -76,23 +73,23 @@ def test_cases
 
     puts "Test 1: list of names"
     ss1 = SecretSanta.new(names[0,3], opts)
-    ss1.pair
+    pp ss1.pairs
 
     puts "Test 2: one name"
     ss2 = SecretSanta.new([names.last], opts)
-    ss2.pair
+    pp ss2.pairs
 
     puts "Test 3: only duplicates"
     ss3 = SecretSanta.new(names[2,4], opts)
-    ss3.pair
+    pp ss3.pairs
 
     puts "Test 4: some duplicates"
     ss4 = SecretSanta.new(names, opts)
-    ss4.pair
+    pp ss4.pairs
 
     puts "Test 5: no names"
     ss5 = SecretSanta.new(names[names.size+1], opts)
-    ss5.pair
+    pp ss5.pairs
 end 
 
 def testing
@@ -109,18 +106,17 @@ end
 
 if __FILE__ == $0
     if ARGV.size == 0
-        #testing
         print "usage: ", $0, " [namesfile | name1 name2 name3]\name3"
     elsif ARGV.size == 1
-        print "read the file\n"
+        print "reading the names from file\n"
         file = File.open(ARGV[0], "r")
         names = file.readlines.map(&:chomp)
         names = names.select{|name| name != ""}
         ss = SecretSanta.new(names)
-        pp ss.pair
+        pp ss.pairs
     else
-        print "read the names\n"
+        print "reading the names from command line\n"
         ss = SecretSanta.new(ARGV)
-        pp ss.pair
+        pp ss.pairs
     end
 end
